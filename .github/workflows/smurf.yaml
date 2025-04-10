@@ -1,0 +1,41 @@
+name: Smurf SDKR Workflow
+
+on:
+  push:
+    branches: master
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+
+     - name: Configure AWS credentiaL
+       uses: aws-actions/configure-aws-credentials@v4
+       with:
+        role-to-assume: arn:aws:iam::924144197303:role/OIDC_Github_role
+        role-session-name: samplerolesession
+        aws-region: us-east-2
+
+     - name: Checkout repository
+       uses: actions/checkout@v3
+      
+     - name: Smurf sdkr build
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: build nginx:v1
+        
+     - name: Smurf sdkr tag
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: tag nginx:v1 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
+
+     - name: Smurf sdkr push image
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: push 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
