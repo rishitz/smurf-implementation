@@ -1,6 +1,7 @@
 name: Smurf SDKR Workflow
 
 on:
+  workflow_dispatch:
   push:
     branches: master
 
@@ -25,7 +26,7 @@ jobs:
         path: 
         tool: sdkr
         command: build nginx:v1
-        
+
      - name: Smurf sdkr tag
        uses: clouddrove/smurf@v1.0.0
        with:
