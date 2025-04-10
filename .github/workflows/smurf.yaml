@@ -44,9 +44,10 @@ jobs:
         path: 
         tool: sdkr
         command: provision-ecr --help
-    #  - name: Smurf sdkr push image
-    #    uses: clouddrove/smurf@v1.0.0
-    #    with:
-    #     path: 
-    #     tool: sdkr
-    #     command: push ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
+
+     - name: Smurf sdkr push image
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
