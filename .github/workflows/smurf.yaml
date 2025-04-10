@@ -8,8 +8,11 @@ on:
 jobs:
   login:
     runs-on: ubuntu-latest
-    steps:
+    permissions:
+      id-token: write       # ✅ Required for OIDC
+      contents: read        # Optional: allows reading repo contents
 
+    steps:
      - name: Configure AWS credentiaL
        uses: aws-actions/configure-aws-credentials@v4
        with:
