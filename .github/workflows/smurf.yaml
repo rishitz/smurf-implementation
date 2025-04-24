@@ -27,26 +27,26 @@ jobs:
        run: ls -la
 
       
-    #  - name: Smurf sdkr build
-    #    uses: clouddrove/smurf@v1.0.0
-    #    with:
-    #     path: 
-    #     tool: sdkr
-    #     command: build nginx:v1
+     - name: Smurf sdkr build
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: build nginx:v1
 
-    #  - name: Smurf sdkr tag
-    #    uses: clouddrove/smurf@v1.0.0
-    #    with:
-    #     path: 
-    #     tool: sdkr
-    #     command: tag nginx:v1 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
+     - name: Smurf sdkr tag
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: tag nginx:v1 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
 
-    #  - name: Smurf sdkr push image
-    #    uses: clouddrove/smurf@v1.0.0
-    #    with:
-    #     path: 
-    #     tool: sdkr
-    #     command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
+     - name: Smurf sdkr push image
+       uses: clouddrove/smurf@v1.0.0
+       with:
+        path: 
+        tool: sdkr
+        command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
 
      - name: Deploy to EKS
        run: |
@@ -65,6 +65,14 @@ jobs:
        with:
           tool: selm
           command: lint ./api
+
+     - name: Smurf selm install
+       uses: clouddrove/smurf@v1.0.0
+       with:
+          tool: selm
+          command: upgrade api ./api -f values/dev.yaml --timeout 300s --atomic --debug --install
+
+      
 
 
 
