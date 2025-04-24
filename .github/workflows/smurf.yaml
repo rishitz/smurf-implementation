@@ -58,7 +58,7 @@ jobs:
        uses: clouddrove/smurf@v1.0.0
        with:
           tool: selm
-          command: template api ./api -f./api/values.yaml
+          command: status api
 
 
 
