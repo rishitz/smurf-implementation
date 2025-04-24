@@ -60,5 +60,11 @@ jobs:
           tool: selm
           command: template api ./api
 
+     - name: Smurf selm lint
+       uses: clouddrove/smurf@v1.0.0
+       with:
+          tool: selm
+          command: lint ./api
+
 
 
