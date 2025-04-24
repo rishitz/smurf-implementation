@@ -1,80 +1,118 @@
-name: Smurf SDKR Workflow
+# name: Smurf SDKR Workflow
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches: master
+
+# jobs:
+#   login:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write       # ✅ Required for OIDC
+#       contents: read        # Optional: allows reading repo contents
+
+#     steps:
+#      - name: Configure AWS credentiaL
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#         role-to-assume: arn:aws:iam::924144197303:role/OIDC_Github_role
+#         role-session-name: samplerolesession
+#         aws-region: us-east-2
+
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+
+#      - name: List files in root
+#        run: ls -la
+
+      
+#      - name: Smurf sdkr build
+#        uses: clouddrove/smurf@v1.0.0
+#        with:
+#         path: 
+#         tool: sdkr
+#         command: build nginx:v1
+
+#      - name: Smurf sdkr tag
+#        uses: clouddrove/smurf@v1.0.0
+#        with:
+#         path: 
+#         tool: sdkr
+#         command: tag nginx:v1 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
+
+#      - name: Smurf sdkr push image
+#        uses: clouddrove/smurf@v1.0.0
+#        with:
+#         path: 
+#         tool: sdkr
+#         command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
+
+#      - name: Deploy to EKS
+#        run: |
+#          aws eks update-kubeconfig --name test-cluster --region us-east-2
+#          export KUBECONFIG=~/.kube/config
+#          kubectl get nodes
+
+#      - name: Smurf selm Template
+#        uses: clouddrove/smurf@v1.0.0
+#        with:
+#           tool: selm
+#           command: template api ./api
+
+#      - name: Smurf selm lint
+#        uses: clouddrove/smurf@v1.0.0
+#        with:
+#           tool: selm
+#           command: lint ./api
+
+#      - name: Smurf selm install
+#        uses: clouddrove/github-shared-workflows/.github/workflows/smurf.yml@master
+#        with:
+#           tool: selm
+#           command: upgrade api ./api -f values/dev.yaml --timeout 300 --atomic --debug --install
+
+name: Pipeline Docker optional
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
 
 on:
-  workflow_dispatch:
   push:
-    branches: master
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
-  login:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write       # ✅ Required for OIDC
-      contents: read        # Optional: allows reading repo contents
-
-    steps:
-     - name: Configure AWS credentiaL
-       uses: aws-actions/configure-aws-credentials@v4
-       with:
-        role-to-assume: arn:aws:iam::924144197303:role/OIDC_Github_role
-        role-session-name: samplerolesession
-        aws-region: us-east-2
-
-     - name: Checkout repository
-       uses: actions/checkout@v3
-
-     - name: List files in root
-       run: ls -la
-
-      
-     - name: Smurf sdkr build
-       uses: clouddrove/smurf@v1.0.0
-       with:
-        path: 
-        tool: sdkr
-        command: build nginx:v1
-
-     - name: Smurf sdkr tag
-       uses: clouddrove/smurf@v1.0.0
-       with:
-        path: 
-        tool: sdkr
-        command: tag nginx:v1 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
-
-     - name: Smurf sdkr push image
-       uses: clouddrove/smurf@v1.0.0
-       with:
-        path: 
-        tool: sdkr
-        command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v2
-
-     - name: Deploy to EKS
-       run: |
-         aws eks update-kubeconfig --name test-cluster --region us-east-2
-         export KUBECONFIG=~/.kube/config
-         kubectl get nodes
-
-     - name: Smurf selm Template
-       uses: clouddrove/smurf@v1.0.0
-       with:
-          tool: selm
-          command: template api ./api
-
-     - name: Smurf selm lint
-       uses: clouddrove/smurf@v1.0.0
-       with:
-          tool: selm
-          command: lint ./api
-
-     - name: Smurf selm install
-       uses: clouddrove/smurf@v1.0.0
-       env:
-        EKS Cluster: test-cluster
-       with:
-          tool: selm
-          command: upgrade api ./api -f values/dev.yaml --timeout 300 --atomic --debug --install
-
-      
+  job1:
+    uses: clouddrove/github-shared-workflows/.github/workflows/smurf_docker_helm.yml@master
+    with:
+      docker_enable: true
+      docker_registry: aws
+      docker_registry_url: 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr     # ecr repo uri
+      docker_push: true
+      aws_eks_cluster_name: test-cluster     # cluster name
+      aws_role: arn:aws:iam::924144197303:role/OIDC_Github_role
+      aws_region: us-east-2
+      dockerfile_path: ./Dockerfile
+      aws_auth_method: oidc
+      # docker_build_args: 
+      #   ENV=dev
+      provider: aws
+      docker_image_name: test-image   # dcoker image name
+      docker_image_tag: ${{ github.run_id }}
+      docker_image_tar: test-image.tar     # the artifact name that will be saved in workflow,
+      # aws_auth: true
+      helm_enable: true
+      helm_release_name: api        # release name
+      helm_chart_directory: ./api     # helm chart directory
+      helm_values_file_path: values/dev.yaml       # values yml path
+      helm_namespace: 
+      helm_timeout: 120
+    secrets: 
+      aws_set_parameters:
+        --set image.tag=${{ github.run_id }}
 
 
 
