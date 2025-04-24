@@ -70,7 +70,7 @@ jobs:
        uses: clouddrove/smurf@v1.0.0
        with:
           tool: selm
-          command: upgrade api ./api -f values/dev.yaml --timeout 300s --atomic --debug --install
+          command: upgrade api ./api -f values/dev.yaml --timeout 300 --atomic --debug --install
 
       
 
