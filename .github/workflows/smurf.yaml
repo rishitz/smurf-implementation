@@ -51,7 +51,7 @@ jobs:
      - name: Deploy to EKS
        run: |
          aws eks update-kubeconfig --name test-cluster --region us-east-2
-         export KUBECONFIG=~/github/home/.kube/config
+         export KUBECONFIG=~/.kube/config
          kubectl get nodes
 
      - name: Smurf selm Template
