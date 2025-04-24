@@ -97,7 +97,8 @@ jobs:
       aws_region: us-east-2
       dockerfile_path: ./Dockerfile
       aws_auth_method: oidc
-      # docker_build_args: 
+      gcp_auth_method: xyz
+      # docker_build_args:
       #   ENV=dev
       provider: aws
       docker_image_name: test-image   # dcoker image name
