@@ -68,6 +68,8 @@ jobs:
 
      - name: Smurf selm install
        uses: clouddrove/smurf@v1.0.0
+       env:
+        EKS Cluster: test-cluster
        with:
           tool: selm
           command: upgrade api ./api -f values/dev.yaml --timeout 300 --atomic --debug --install
