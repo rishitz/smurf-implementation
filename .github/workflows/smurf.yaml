@@ -48,17 +48,17 @@ jobs:
     #     tool: sdkr
     #     command: provision-ecr 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr:v1
 
-    #  - name: Deploy to EKS
-    #    run: |
-    #      aws eks update-kubeconfig --name test-cluster --region us-east-2
-    #      export KUBECONFIG=~/.kube/config
-    #      kubectl get nodes
+     - name: Deploy to EKS
+       run: |
+         aws eks update-kubeconfig --name test-cluster --region us-east-2
+         export KUBECONFIG=~/.kube/config
+         kubectl get nodes
 
-    #  - name: Smurf selm Template
-    #    uses: clouddrove/smurf@v1.0.0
-    #    with:
-    #       tool: selm
-    #       command: template ./api --values ["./api/values.yaml "]
+     - name: Smurf selm Template
+       uses: clouddrove/smurf@v1.0.0
+       with:
+          tool: selm
+          command: template api ./api -f./api/values.yaml
 
 
 
