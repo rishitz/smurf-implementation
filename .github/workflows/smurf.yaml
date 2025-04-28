@@ -90,7 +90,7 @@ jobs:
     with:
       docker_enable: true
       docker_registry: aws
-      docker_registry_url: 924144197303.dkr.ecr.us-east-2.amazonaws.com/test-ecr     # ecr repo uri
+      docker_registry_url: 924144197303.dkr.ecr.us-east-2.amazonaws.com    # ecr repo uri
       docker_push: true
       aws_eks_cluster_name: test-cluster     # cluster name
       aws_role: arn:aws:iam::924144197303:role/OIDC_Github_role
@@ -101,9 +101,9 @@ jobs:
       # docker_build_args:
       #   ENV=dev
       provider: aws
-      docker_image_name: test-image   # dcoker image name
+      docker_image_name: test-ecr   # dcoker image name
       docker_image_tag: ${{ github.run_id }}
-      docker_image_tar: test-image.tar     # the artifact name that will be saved in workflow,
+      docker_image_tar: test-ecr.tar     # the artifact name that will be saved in workflow,
       # aws_auth: true
       helm_enable: true
       helm_release_name: api        # release name
