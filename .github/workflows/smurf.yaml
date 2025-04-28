@@ -110,7 +110,7 @@ jobs:
       helm_chart_directory: ./api     # helm chart directory
       helm_values_file_path: values/dev.yaml       # values yml path
       helm_namespace: test
-      helm_timeout: 120
+      helm_timeout: 600
     secrets: 
       aws_set_parameters:
         --set image.tag=${{ github.run_id }}
